@@ -5,8 +5,8 @@ from random import randrange, choice
 from collections import defaultdict 
 
 actions = ['Up', 'Left', 'Down', 'Right', 'Restart', 'Exit']
-lettercodes = [ord(ch) for ch in 'WASDRQwasdrq']
-actions_dict = dict(zip(lettercodes, actions * 2))
+lettercodes = [ord(ch) for ch in 'WASDRQwasdrq'] + [curses.KEY_UP, curses.KEY_LEFT, curses.KEY_DOWN, curses.KEY_RIGHT]
+actions_dict = dict(zip(lettercodes, actions * 3))
 
 def get_user_action(keyboard):
     char = 'N'
@@ -24,7 +24,7 @@ class GameField(object):
     def __init__(self, height=4, width=4, win=2048):
         self.height = height 
         self.width = width 
-        self.win_value = 2048
+        self.win_value = win
         self.score = 0
         self.highscore = 0
         self.reset()
@@ -100,7 +100,7 @@ class GameField(object):
             screen.addstr(string + '\n')
 
         def draw_hor_separator():
-            line = '+' + ('+------' * self.width + '+')[1:]
+            line = '+' + '------+' * self.width
             separator = defaultdict(lambda: line)
             if not hasattr(draw_hor_separator, "counter"):
                 draw_hor_separator.counter = 0
@@ -162,7 +162,7 @@ def main(stdscr):
     def not_game(state):
         #画出 GameOver 的画面
         #读取用户输入判断是Restart还是Exit
-        get_field.draw(stdscr)
+        game_field.draw(stdscr)
         action = get_user_action(stdscr)
         responses = defaultdict(lambda: state)
         responses['Restart'], responses['Exit'] = 'Init', 'Exit'
