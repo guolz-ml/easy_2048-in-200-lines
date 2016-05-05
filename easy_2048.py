@@ -162,7 +162,7 @@ def main(stdscr):
     def not_game(state):
         #画出 GameOver 的画面
         #读取用户输入判断是Restart还是Exit
-        get_field.draw(stdscr)
+        game_field.draw(stdscr)
         action = get_user_action(stdscr)
         responses = defaultdict(lambda: state)
         responses['Restart'], responses['Exit'] = 'Init', 'Exit'
